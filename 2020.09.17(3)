@@ -1,0 +1,39 @@
+// биноминальный коэффицент
+#include <iostream>
+using namespace std;
+
+int faktorial (int n)
+{
+  if (n < 0)
+    return 0;
+  if (n == 0)
+    return 1;
+  else return n * faktorial(n - 1);
+
+}
+
+unsigned int binom (int n , int k)
+{
+  if ( k == 0)
+    return 1;
+  if (k ==1)
+    return n;
+  if ( k > n / 2)
+    k = n - k;
+  unsigned int res = 1;
+  for (int i = 1; i <= k; ++i)
+  {
+    res *= n - k + i;
+    res /= i;
+  }
+  return res;
+
+}
+
+int main()
+{
+  int n, k;
+  cin >> n >> k;
+  cout << binom(n ,k);
+  return 0;
+}
