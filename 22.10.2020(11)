@@ -1,0 +1,55 @@
+//Написать функцию эффективного поиска k-ой порядковой статистики;
+#include <iostream>
+using namespace std;
+
+int Partition( int* a, int n )
+{
+  if( n <= 1 )
+    return 0;
+  const int& pivot = a[n - 1];
+  int i = 0;
+  int j = n - 2;
+
+  while( i <= j )
+  {
+    for( ; a[i] < pivot; ++i )
+    {}
+
+    for( ; j >= 0 && !(a[j] < pivot ); --j)
+    {}
+
+    if (i < j )
+    swap (a[i++], a[j--]);
+  }
+  swap (a[i], a[n - 1]);
+  return i;
+}
+
+void QuickSort (int* a, int n)
+{
+  int part = Partition (a, n);
+  if (part > 0)
+    QuickSort (a, part);
+  if (part < n - 1)
+    QuickSort (a + part + 1, n - 1 - part);
+}
+
+int KStatDC (int* a, int n, int k)
+{
+    QuickSort(a, n);
+    return a[k];
+}
+
+int main()
+{
+  int n;
+  cin >> n;
+  int a[n];
+  for (int i = 0 ; i < n; ++i)
+  {
+    cin >> a[i];
+  }
+
+  cout << KStatDC(a, n, 0 ) << endl;
+  return 0;
+}
