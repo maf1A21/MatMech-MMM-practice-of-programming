@@ -1,0 +1,39 @@
+//Написать функцию записывающую в переданный массив все составные числа меньшие N. 
+#include <iostream>
+using namespace std;
+
+void Eratosfen_chet (int *a,  int &n)
+{
+  int number_of_composites {0};
+  int *tmp_arr = new int [n + 1];
+  for (int i = 0; i < n + 1; ++i)
+  {
+    tmp_arr[i] = i;
+  }
+
+  for (int p = 2; p < n + 1; ++p)
+  {
+   for (int j = p * p; j < n; j += p)
+    {
+          if (tmp_arr[j] != 0)
+          {
+            a[number_of_composites] = tmp_arr[j];
+            tmp_arr[j] = 0;
+            number_of_composites ++;
+          }
+    }
+  }
+
+  n -= ( n - number_of_composites);
+  delete tmp_arr;
+}
+
+int main()
+{
+  int n;
+  cin >> n;
+  int a[n + 1];
+  Eratosfen_chet(a, n);
+  for (int i = 0; i < n; ++i)
+    cout << a[i] << " ";
+}
