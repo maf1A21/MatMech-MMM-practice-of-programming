@@ -1,0 +1,56 @@
+//Реализовать решение задачи о рюкзаке в непрерывной формулировке
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+struct Item
+{
+  int weigth;
+  int value;
+};
+
+double value_per_kg (const Item &X)
+{
+  return X.weigth * 1.0 / X.value;
+}
+
+bool Comp ( const Item &left, const Item &right)
+{
+  return value_per_kg(left) < value_per_kg(right);
+}
+
+double max_knapsack_value(int capacity, vector <Item> Items)
+{
+  sort(Items.begin(), Items.end(), Comp);
+
+  double value = 0;
+
+  for (auto &item:Items)
+  {
+    if (capacity > item.weigth)
+    {
+      capacity -= item.weigth;
+      value += item.value;
+    }
+    else
+    {
+        value += item.value * (capacity * 1.0 / item.weigth);
+        break;
+    }
+  }
+  return value;
+}
+
+int main()
+{
+  int number_of_items, knapsack_capacity;
+  cin >> number_of_items >> knapsack_capacity;
+
+  vector <Item> Items(number_of_items);
+  for (int i = 0 ; i < number_of_items; ++i)
+    cin >> Items[i].weigth >> Items[i].value;
+
+  double result = max_knapsack_value(knapsack_capacity, move(Items));
+  cout << result;
+}
