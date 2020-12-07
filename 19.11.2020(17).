@@ -1,0 +1,59 @@
+//Дана аудитория и k человек желающих читать в ней в лекции. Каждый человек указывает время лекции со времени a_i до b_i. Организовать расписание, при котором наибольшее количество занятий будет проведено.
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
+
+struct Lection
+{
+  int start;
+  int finish;
+};
+
+bool Comp (const Lection &a, const Lection &b)
+{
+  return a.finish < b.finish;
+}
+
+void Schedule (int &number_of_professors, vector <Lection>& lections, vector <Lection>& schedule)
+{
+  sort (lections.begin(), lections.end(), Comp);
+
+
+  schedule[0].start = lections[0].start;
+  schedule[0].finish = lections[0].finish;
+
+  int current_finish = schedule[0].finish;
+  int current_number_of_lections = 1;
+
+  for (int i = 1; i < number_of_professors; ++i)
+  {
+    if (lections[i].start > current_finish)
+    {
+     schedule[current_number_of_lections].start = lections[i].start;
+     schedule[current_number_of_lections].finish = lections[i].finish;
+     current_finish = schedule[current_number_of_lections].finish;
+     current_number_of_lections ++;
+    }
+  }
+  number_of_professors = current_number_of_lections;
+}
+
+int main()
+{
+  int number_of_professors;
+  cin >> number_of_professors;
+
+  vector <Lection> lections(number_of_professors);
+  for (int i = 0; i < number_of_professors; ++i)
+    cin >> lections[i].start >> lections[i].finish;
+
+  vector <Lection> schedule(number_of_professors);
+  Schedule(number_of_professors, lections, schedule);
+
+  cout << endl << number_of_professors << endl;
+
+  for (int i = 0; i < number_of_professors; ++i)
+    cout << schedule[i].start << " " << schedule[i].finish << endl;
+  return 0;
+}
