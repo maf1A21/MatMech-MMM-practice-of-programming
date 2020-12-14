@@ -1,0 +1,183 @@
+//Закончить и реализовать структуру Rational(с пары). В main привести примеры использования методов и функций.
+#include <iostream>
+using namespace std;
+
+int GCD (int a, int b)
+{
+  if (b == 0)
+    return a;
+  return GCD (b, a % b);
+}
+
+
+class rational
+{
+public:
+    int a;
+    int b;
+    rational(int x = 0, int y = 1);
+    rational(const rational&);
+
+    rational& operator=(const rational& C)
+    {
+        this->a = C.a;
+        this->b = C.b;
+    }
+
+    friend istream& operator>>(istream&, rational&);
+    friend ostream& operator<<(ostream&,const rational&);
+
+    rational operator+=(const rational&AA)
+    {
+        this->a = this->a*AA.b+AA.a*this->b;
+        this->b = this->b*AA.b;
+        int gcd = GCD(this->a,this->b);
+        this->a = this->a/gcd;
+        this->b = this->b/gcd;
+        return *this;
+    }
+
+    rational operator*=(const rational& A)
+    {
+        int gcd = GCD(this->a*A.a, this->b*A.b);
+        this->a = (this->a*A.a) / gcd;
+        this->b = (this->b*A.b) / gcd;
+        return *this;
+    }
+ };
+
+
+    rational::rational (const rational& C)
+    {
+        a = C.a;
+        b = C.b;
+    }
+
+    rational::rational(int x,int y)
+    {
+        a = x / GCD(x,y);
+        b = y / GCD(x,y);
+    }
+
+    istream& operator>>(istream& is, rational&AA)
+    {
+        is>>AA.a;
+        is>>AA.b;
+        int gcd = GCD(AA.a,AA.b);
+        AA.a = AA.a / gcd;
+        AA.b = AA.b / gcd;
+        return is;
+    }
+
+    ostream& operator<<(ostream &os,const rational& AA)
+    {
+        if((AA.a==AA.b)||AA.b==1)
+        {
+            os<<AA.a;
+        }
+        else
+        {
+        os<<AA.a<<'/'<<AA.b;
+        }
+    }
+
+    rational operator+(const rational& A,const rational& B)
+    {
+      rational C;
+      C = A;
+      C += B;
+      return C;
+    }
+
+    rational operator*(const rational& AA,const rational& BB)
+    {
+      rational C;
+      C = AA;
+      C *= BB;
+      return C;
+    }
+
+    rational operator+(int a, const rational&B)
+    {
+      rational C;
+      C.a = a;
+      C.b = 1;
+      C += B;
+    return C;
+    }
+
+    rational operator*(int a, const rational& BB)
+    {
+      rational C;
+      C.a = a;
+      C *= BB;
+      return C;
+    }
+
+    bool operator<(rational AA, rational BB)
+    {
+      int a, b;
+      a = (AA.a * BB.b);
+      b += (BB.a * AA.b);
+      if (a < b)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+
+    bool operator==(rational AA, rational BB)
+    {
+      int a, b;
+      a = (AA.a * BB.b);
+      b = (BB.a * AA.b);
+      if (a == b)
+      {
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+  int main()
+  {
+    rational A,B,C;
+    cin >> A >> B;
+    cout << A << endl << B << endl;
+    C = A + B;
+    cout << C << endl;
+    C = A * B;
+    cout << C << endl;
+    C = 5 + A;
+    cout << C << endl;
+    C = 5 * A;
+    cout << C << endl;
+
+    if (A == B)
+    {
+        cout << A << " = " << B <<endl;
+    }
+    if (A < B)
+    {
+        cout << A << ' < ' << B << endl;
+    }
+    if (!(A < B) &&!(A == B))
+    {
+        cout << A << '>' << B << endl;
+    }
+
+    if (!(A < B) && (A == B))
+    {
+        cout << A << " >= " << B << endl;
+    }
+
+    if ((A < B) && (A == B) || (A == B))
+    {
+        cout << A << " <= " << B << endl;
+    }
+    return 0;
+}
