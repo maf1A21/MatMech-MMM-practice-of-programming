@@ -1,0 +1,48 @@
+//Написать программу находящую разложения натурального числа N на сумму натуральных квадратов с наименьшим возможным числом слагаемых.
+#include <iostream>
+#include <algorithm>
+#include <cmath>
+#include <vector>
+using namespace std;
+
+void get_result (int a, int b, int c, int d)
+{
+  vector <int> res {a, b, c, d};
+  sort (res.begin(), res.end());
+  for (int i = 0; i < 3; ++i)
+  {
+    if (res[i] > 0)
+      cout << res[i] << " + ";
+  }
+  cout << res[3];
+
+}
+void Lagrange(int n)
+{
+    for(int i = 0; i <= sqrt(n); ++i)
+    {
+        for(int j = i; j <= sqrt(n); ++j)
+        {
+            for(int p = j; p <= sqrt(n); ++p)
+            {
+                for(int k = p; k <= sqrt(n); ++k)
+                {
+                    if(i * i + j * j + p * p + k * k == n)
+                    {
+                        get_result(i,j,p,k);
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+    Lagrange(n);
+    return 0;
+}
